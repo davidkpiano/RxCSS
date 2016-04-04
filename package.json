@@ -1,0 +1,23 @@
+{
+  "name": "rxcss",
+  "version": "0.0.1",
+  "description": "RxJS and CSS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidkpiano/RxCSS.git"
+  },
+  "keywords": [
+    "RxJS",
+    "CSS"
+  ],
+  "author": "David Khourshid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidkpiano/RxCSS/issues"
+  },
+  "homepage": "https://github.com/davidkpiano/RxCSS#readme"
+}
