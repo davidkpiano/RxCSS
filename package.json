@@ -28,6 +28,7 @@
     "babel-preset-stage-0": "^6.5.0"
   },
   "dependencies": {
+    "postcss": "^5.0.19",
     "rx": "^4.1.0",
     "rx-dom": "^7.0.3"
   }
