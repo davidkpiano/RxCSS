@@ -2,7 +2,7 @@
   "name": "rxcss",
   "version": "0.0.2",
   "description": "RxJS and CSS",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "babel -w src --out-dir lib",
     "test": "echo \"Error: no test specified\" && exit 1"

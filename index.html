@@ -4,10 +4,23 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <style id="style">
-    #foo {
-      color: var(--foo, green);
-      left: var(--left);
+    *, *:before, *:after {
+      box-sizing: border-box;
       position: relative;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    #foo {
+      padding: 1rem;
+      background: red;
+      color: white;
+      width: 50%;
     }
   </style>
   <script src="dist/index.js"></script>
