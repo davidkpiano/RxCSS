@@ -1,4 +1,6 @@
-import Rx from 'rxjs/Rx';
+import Rx from 'rx';
+
+window.Rx = Rx;
 
 const docStyle = document.documentElement.style;
 
@@ -15,21 +17,23 @@ const styledash = {
     .map((key) => styledash.set(key, mapping[key]))
 };
 
-class RxCSS {
+class RxCSS extends Rx.Subject {
   constructor(options = {}) {
-    this.state = {};
+    super();
+    
+    this._state = {};
   }
 
   get(key) {
-    return this.state[key];
+    return this._state[key];
   }
 
   set(key, value) {
-    this.state[key] = value;
+    this._state[key] = value;
 
     docStyle.setProperty(`--${key}`, value);
 
-    return this;
+    return this.onNext(this._state);
   }
 }
 

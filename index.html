@@ -14,19 +14,78 @@
       width: 100%;
       padding: 0;
       margin: 0;
+      background: #000;
     }
 
-    #foo {
-      padding: 1rem;
-      background: red;
-      color: white;
-      width: 50%;
+    body {
+      padding: 3rem;
+    }
+
+    .cards {
+      height: 100%;
+      width: 100%;
+      background: black;
+    }
+
+    .card {
+      position: absolute;
+      border-radius: 3px;
+      background: white;
+      height: 100%;
+      width: 100%;
+      border: 1px solid green;
+      transform-origin: bottom center;
+    }
+
+    .card:nth-last-child(3) {
+      transform: translateX(calc(var(--delta) * 25%)) rotate(calc(var(--delta) * 11.25deg));
+    }
+
+    .card:nth-last-child(2) {
+      transform: translateX(calc(var(--delta) * 50%)) rotate(calc(var(--delta) * 22.5deg));
+    }
+
+    .card:last-child {
+      transform: translateX(calc(var(--delta) * 100%)) rotate(calc(var(--delta) * 45deg));
+    }
+
+    html:not(.moving) .card {
+      transition: transform 0.5s ease-in-out;
     }
   </style>
   <script src="dist/index.js"></script>
 </head>
 <body>
-  <div id="foo">Testing</div>
+  <div class="cards">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card">
+      <div id="val"></div>
+    </div>
+  </div>
 </body>
 <script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
+<script>
+  const $foo = document.documentElement;
+
+  const hFoo = new Hammer($foo);
+
+  const pan = Rx.Observable.fromEventPattern((h) => hFoo.on('panleft panright', h));
+
+
+
+  pan.subscribe((ev) => {
+    $foo.classList.add('moving');
+    rxcss.set('delta', ev.deltaX / window.innerWidth);
+  });
+
+  hFoo.on('panend', () => {
+    $foo.classList.remove('moving');
+    rxcss.set('delta', 0);
+  });
+
+  console.log(hFoo);
+</script>
 </html>
