@@ -15,6 +15,16 @@
       padding: 0;
       margin: 0;
       background: #000;
+      animation: bg 1s infinite;
+    }
+
+    @keyframes bg {
+      from, to {
+        background: #000;
+      }
+      50% {
+        background: white;
+      }
     }
 
     body {
@@ -35,9 +45,10 @@
       width: 100%;
       border: 1px solid green;
       transform-origin: bottom center;
+      transform: translateX(calc(var(--delta) * 100%));
     }
 
-    .card:nth-last-child(3) {
+/*    .card:nth-last-child(3) {
       transform: translateX(calc(var(--delta) * 25%)) rotate(calc(var(--delta) * 11.25deg));
     }
 
@@ -47,10 +58,10 @@
 
     .card:last-child {
       transform: translateX(calc(var(--delta) * 100%)) rotate(calc(var(--delta) * 45deg));
-    }
+    }*/
 
     html:not(.moving) .card {
-      transition: transform 0.5s ease-in-out;
+      /*transition: transform 0.5s ease-in-out;*/
     }
   </style>
   <script src="dist/index.js"></script>
@@ -61,30 +72,38 @@
     <div class="card"></div>
     <div class="card"></div>
     <div class="card"></div>
-    <div class="card">
+    <div class="card one">
       <div id="val"></div>
     </div>
   </div>
 </body>
 <script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
 <script>
-  const $foo = document.documentElement;
+  // const $foo = document.documentElement;
+  const $foo = document.querySelector('.card.one')
 
   const hFoo = new Hammer($foo);
 
+  // hFoo.on('panleft panright', (ev) => {
+  //   $foo.style.transform = `translateX(${ev.deltaX * 100 / window.innerWidth}%)`;
+  // });
+
   const pan = Rx.Observable.fromEventPattern((h) => hFoo.on('panleft panright', h));
 
+  rxcss.style({
+    delta: pan.map(ev => ev.deltaX / window.innerWidth),
+    test: Rx.Observable.just({ one: 2 }),
+  })
 
+  // pan.subscribe((ev) => {
+  //   $foo.classList.add('moving');
+  //   rxcss.set('delta', ev.deltaX / window.innerWidth);
+  // });
 
-  pan.subscribe((ev) => {
-    $foo.classList.add('moving');
-    rxcss.set('delta', ev.deltaX / window.innerWidth);
-  });
-
-  hFoo.on('panend', () => {
-    $foo.classList.remove('moving');
-    rxcss.set('delta', 0);
-  });
+  // hFoo.on('panend', () => {
+  //   $foo.classList.remove('moving');
+  //   rxcss.set('delta', 0);
+  // });
 
   console.log(hFoo);
 </script>

@@ -1,13 +1,18 @@
-import Rx from 'rx';
-
-window.Rx = Rx;
+import RxDOM from 'rx-dom';
 
 const docStyle = document.documentElement.style;
 
 const styledash = {
   set: (key, val) => {
+    console.log('setting', key, val);
     if (typeof key === 'object' && !val) {
       return styledash.merge(key);
+    }
+
+    if (typeof val === 'object') {
+      return Object.keys(val).forEach((subkey) => {
+        styledash.set(`${key}-${subkey}`, val[subkey]);
+      });
     }
 
     return docStyle.setProperty(`--${key}`, val);
@@ -17,24 +22,46 @@ const styledash = {
     .map((key) => styledash.set(key, mapping[key]))
 };
 
-class RxCSS extends Rx.Subject {
+class RxCSS {
   constructor(options = {}) {
-    super();
+    this.subject = new Rx.Subject();
     
-    this._state = {};
+    this.state = {};
   }
 
   get(key) {
-    return this._state[key];
+    return this.state[key];
   }
 
   set(key, value) {
-    this._state[key] = value;
+    this.state[key] = value;
 
     docStyle.setProperty(`--${key}`, value);
 
-    return this.onNext(this._state);
+    return this.subject.onNext(this.state);
+  }
+
+  subscribe(...args) {
+    return this.subject.subscribe(...args);
+  }
+
+  style(observableMap, initialStyle = {}) {
+    const style$ = Object.keys(observableMap).map((key) => {
+      let observable = observableMap[key];
+
+      if (!(observable instanceof Rx.Observable)) {
+        observable = Rx.Observable.just(observableMap[key]);
+      }
+
+      return observable.map((val) => ({ [key]: val }));
+    }).reduce((a, b) => Rx.Observable.combineLatest(a, b,
+      (a, b) => ({ ...a, ...b })), Rx.Observable.just(initialStyle));
+
+    style$.subscribe((style) => {
+      styledash.merge(style);
+    });
   }
 }
 
-window.rxcss = new RxCSS();
+window.Rx = RxDOM;
+window.RxCSS = RxCSS;
