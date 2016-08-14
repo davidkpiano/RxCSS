@@ -4,9 +4,9 @@ const docStyle = document.documentElement.style;
 
 const styledash = {
   set: (key, val) => {
-    console.log('setting', key, val);
     if (typeof key === 'object' && !val) {
-      return styledash.merge(key);
+      return Object.keys(key)
+        .map((subKey) => styledash.set(subKey, key[subKey]));
     }
 
     if (typeof val === 'object') {
@@ -18,15 +18,13 @@ const styledash = {
     return docStyle.setProperty(`--${key}`, val);
   },
   get: (key) => docStyle.getProperty(`--${key}`),
-  merge: (mapping) => Object.keys(mapping)
-    .map((key) => styledash.set(key, mapping[key]))
 };
 
 class RxCSS {
   constructor(options = {}) {
     this.subject = new Rx.Subject();
-    
     this.state = {};
+    this.subscribe = this.subject.subscribe;
   }
 
   get(key) {
@@ -36,13 +34,9 @@ class RxCSS {
   set(key, value) {
     this.state[key] = value;
 
-    docStyle.setProperty(`--${key}`, value);
+    styledash.set(key, value);
 
     return this.subject.onNext(this.state);
-  }
-
-  subscribe(...args) {
-    return this.subject.subscribe(...args);
   }
 
   style(observableMap, initialStyle = {}) {
@@ -55,13 +49,16 @@ class RxCSS {
 
       return observable.map((val) => ({ [key]: val }));
     }).reduce((a, b) => Rx.Observable.combineLatest(a, b,
-      (a, b) => ({ ...a, ...b })), Rx.Observable.just(initialStyle));
+      (a, b) => ({ ...a, ...b })),
+      Rx.Observable.just(initialStyle));
 
     style$.subscribe((style) => {
-      styledash.merge(style);
+      styledash.set(style);
     });
   }
 }
 
-window.Rx = RxDOM;
-window.RxCSS = RxCSS;
+export default RxCSS;
+export {
+  styledash,
+};
