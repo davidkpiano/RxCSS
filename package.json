@@ -2,10 +2,11 @@
   "name": "rxcss",
   "version": "0.0.5",
   "description": "RxJS and CSS",
-  "main": "dist/index.js",
+  "main": "dist/rxcss.min.js",
   "scripts": {
     "start": "babel -w src --out-dir lib",
-    "build:umd": "webpack -p src/index.js dist/index.js --config webpack.config.prod.js",
+    "build:umd": "webpack -p src/index.js dist/rxcss.min.js --config webpack.config.prod.js",
+    "prepublish": "npm run build:umd",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
