@@ -26,6 +26,8 @@
 
     .card.one {
       transform: translateX(calc(var(--delta) * 1px));
+      background: var(--color);
+      transition: all 1s ease-in-out;
     }
 
   </style>
@@ -45,21 +47,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.lite.compat.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs-dom/7.0.3/rx.dom.compat.min.js"></script>
 <script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
-<script src="./dist/index.js"></script>
+<script src="./dist/rxcss.min.js"></script>
 <script>
   // const $foo = document.documentElement;
   const $foo = document.querySelector('.card.one')
 
   const hFoo = new Hammer($foo);
 
-  const pan = Rx.Observable.fromEventPattern((h) => hFoo.on('panleft panright', h));
+  const pan = Rx.Observable.fromEventPattern(function(h) { return hFoo.on('panstart panleft panright panend', h)});
 
-  const rxcss = new RxCSS.default();
+  pan.subscribe(console.log.bind(console))
 
-  pan.map(e=>console.log(e))
+  RxCSS({
+    // delta: pan.map(function(ev) {return `${ev.deltaX}px`}),
+    delta: pan.map(function(ev) {
+      if (ev.type === 'panend') return 0;
 
-  rxcss.style({
-    delta: pan.map(ev => ev.deltaX),
+      return ev.deltaX
+    }),
   });
 </script>
 </html>

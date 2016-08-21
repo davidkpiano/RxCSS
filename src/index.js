@@ -1,5 +1,3 @@
-import RxDOM from 'rx-dom';
-
 const docStyle = document.documentElement.style;
 
 const styledash = {
@@ -17,30 +15,15 @@ const styledash = {
 
     return docStyle.setProperty(`--${key}`, val);
   },
-  get: (key) => docStyle.getProperty(`--${key}`),
+  get: (key) => docStyle.getPropertyValue(`--${key}`),
 };
 
-class RxCSS {
-  constructor(options = {}) {
-    this.subject = new Rx.Subject();
-    this.state = {};
-    this.subscribe = this.subject.subscribe;
-  }
+function RxCSS(observableMap) {
+  const subject$ = new Rx.Subject();
+  const state = {};
 
-  get(key) {
-    return this.state[key];
-  }
-
-  set(key, value) {
-    this.state[key] = value;
-
-    styledash.set(key, value);
-
-    return this.subject.onNext(this.state);
-  }
-
-  style(observableMap, initialStyle = {}) {
-    const style$ = Object.keys(observableMap).map((key) => {
+  const style$ = Object.keys(observableMap)
+    .map((key) => {
       let observable = observableMap[key];
 
       if (!(observable instanceof Rx.Observable)) {
@@ -48,17 +31,17 @@ class RxCSS {
       }
 
       return observable.map((val) => ({ [key]: val }));
-    }).reduce((a, b) => Rx.Observable.combineLatest(a, b,
+    })
+    .reduce((a, b) => Rx.Observable.combineLatest(a, b,
       (a, b) => ({ ...a, ...b })),
-      Rx.Observable.just(initialStyle));
+      Rx.Observable.just({}));
 
-    style$.subscribe((style) => {
-      styledash.set(style);
-    });
-  }
+  style$.subscribe((style) => {
+    styledash.set(style);
+    subject$.onNext(style);
+  });
 }
 
-export default RxCSS;
-export {
-  styledash,
-};
+RxCSS.styledash = styledash;
+
+module.exports = RxCSS;
