@@ -21,8 +21,8 @@ const styledash = {
 function RxCSS(observableMap) {
   const subject$ = new Rx.Subject();
   const state = {};
-
-  const style$ = Object.keys(observableMap)
+  
+  const style$ = Rx.Observable.merge(...Object.keys(observableMap)
     .map((key) => {
       let observable = observableMap[key];
 
@@ -31,12 +31,10 @@ function RxCSS(observableMap) {
       }
 
       return observable.map((val) => ({ [key]: val }));
-    })
-    .reduce((a, b) => Rx.Observable.combineLatest(a, b,
-      (a, b) => ({ ...a, ...b })),
-      Rx.Observable.just({}));
+    }));
 
   style$.subscribe((style) => {
+    Object.assign(state, style);
     styledash.set(style);
     subject$.onNext(style);
   });

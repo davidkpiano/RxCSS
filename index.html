@@ -26,8 +26,18 @@
 
     .card.one {
       transform: translateX(calc(var(--delta) * 1px));
-      background: var(--color);
-      transition: all 1s ease-in-out;
+    }
+
+    .card.aa {
+      transform: translateX(calc(var(--a) * 1px));
+    }
+
+    .card.bb {
+      transform: translateX(calc(var(--b) * 1px));
+    }
+
+    .card.cc {
+      transform: translateX(calc(var(--c) * 1px));
     }
 
   </style>
@@ -36,9 +46,9 @@
 <body>
   <div class="cards">
     <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
+    <div class="card cc"></div>
+    <div class="card bb"></div>
+    <div class="card aa"></div>
     <div class="card one">
       <div id="val"></div>
     </div>
@@ -54,9 +64,9 @@
 
   const hFoo = new Hammer($foo);
 
-  const pan = Rx.Observable.fromEventPattern(function(h) { return hFoo.on('panstart panleft panright panend', h)});
+  const pan = Rx.Observable
+    .fromEventPattern(function(h) { return hFoo.on('panstart panleft panright panend', h)});
 
-  pan.subscribe(console.log.bind(console))
 
   RxCSS({
     // delta: pan.map(function(ev) {return `${ev.deltaX}px`}),
@@ -65,6 +75,10 @@
 
       return ev.deltaX
     }),
+    a: pan.map(ev=>ev.deltaX + 10),
+    b: pan.map(ev=>ev.deltaX + 20),
+    c: pan.map(ev=>ev.deltaX + 30),
+
   });
 </script>
 </html>
