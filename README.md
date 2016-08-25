@@ -1,6 +1,6 @@
 # RxCSS
 
-** Requirements **
+## Requirements
 
 Make sure [RxJS](https://github.com/ReactiveX/rxjs) is installed and globally available.
 
