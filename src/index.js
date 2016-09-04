@@ -1,3 +1,7 @@
+import { Observable } from 'rxjs/Rx';
+import unit from './unit';
+import rect from './rect';
+
 const docStyle = document.documentElement.style;
 
 const styledash = {
@@ -21,13 +25,13 @@ const styledash = {
 function RxCSS(observableMap) {
   const subject$ = new Rx.Subject();
   const state = {};
-  
-  const style$ = Rx.Observable.merge(...Object.keys(observableMap)
+
+  const style$ = Observable.merge(...Object.keys(observableMap)
     .map((key) => {
       let observable = observableMap[key];
 
-      if (!(observable instanceof Rx.Observable)) {
-        observable = Rx.Observable.just(observableMap[key]);
+      if (!(observable instanceof Observable)) {
+        observable = Observable.just(observableMap[key]);
       }
 
       return observable.map((val) => ({ [key]: val }));
@@ -36,10 +40,14 @@ function RxCSS(observableMap) {
   style$.subscribe((style) => {
     Object.assign(state, style);
     styledash.set(style);
-    subject$.onNext(style);
+    subject$.onNext(state);
   });
+
+  return subject$;
 }
 
 RxCSS.styledash = styledash;
+RxCSS.unit = unit;
+RxCSS.rect = rect;
 
 module.exports = RxCSS;

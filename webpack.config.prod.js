@@ -10,6 +10,14 @@ const config = Object.create(baseConfig);
 
 Object.assign(config, {
   entry: path.join(__dirname, 'src/index.js'),
+  externals: {
+    'rxjs/Rx': {
+      root: 'Rx',
+      commonjs2: 'Rx',
+      commonjs: 'Rx',
+      amd: 'Rx',
+    },
+  },
 });
 
 config.plugins = config.plugins.concat([
