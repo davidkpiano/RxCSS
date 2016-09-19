@@ -2,6 +2,8 @@ import { Observable } from 'rxjs/Rx';
 import unit from './unit';
 import rect from './rect';
 
+window.Observable = Observable;
+
 const docStyle = document.documentElement.style;
 
 const styledash = {
@@ -38,9 +40,9 @@ function RxCSS(observableMap) {
     }));
 
   style$.subscribe((style) => {
-    Object.assign(state, style);
+    const nextState = {...state, ...style};
     styledash.set(style);
-    subject$.onNext(state);
+    subject$.onNext(nextState);
   });
 
   return subject$;
