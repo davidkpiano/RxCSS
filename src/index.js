@@ -1,4 +1,10 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/observable/of';
+import 'rxjs/observable/merge';
+
+import { Subject } from 'rxjs/Subject';
+
 import unit from './unit';
 import rect from './rect';
 
@@ -33,7 +39,7 @@ function RxCSS(observableMap) {
       let observable = observableMap[key];
 
       if (!(observable instanceof Observable)) {
-        observable = Observable.just(observableMap[key]);
+        observable = Observable.of(observableMap[key]);
       }
 
       return observable.map((val) => ({ [key]: val }));
@@ -42,7 +48,7 @@ function RxCSS(observableMap) {
   style$.subscribe((style) => {
     const nextState = {...state, ...style};
     styledash.set(style);
-    subject$.onNext(nextState);
+    subject$.next(nextState);
   });
 
   return subject$;

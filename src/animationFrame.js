@@ -4,11 +4,11 @@ const animationFrame$ = Observable.create((observer) => {
   let active = true;
 
   const dispatch = () => {
-    observer.onNext(null);
-    
+    observer.next(null);
+
     if (active) requestAnimationFrame(dispatch);
   }
-  
+
   dispatch();
 
   return () => active = false;
