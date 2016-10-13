@@ -1,5 +1,7 @@
 # RxCSS
 
+**Note:** This is still an evolving idea! Stay tuned for special announcements at CSS Dev Conf about the future of RxCSS!
+
 ## Requirements
 
 Make sure [RxJS](https://github.com/ReactiveX/rxjs) is installed and globally available.
