@@ -1,6 +1,6 @@
 {
   "name": "rxcss",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "RxJS and CSS",
   "main": "dist/rxcss.min.js",
   "scripts": {
