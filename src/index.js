@@ -1,16 +1,18 @@
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/observable/of';
-import 'rxjs/observable/merge';
-
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
 import unit from './unit';
 import rect from './rect';
 
-window.Observable = Observable;
-
 const docStyle = document.documentElement.style;
+
+const parse = (val) => {
+  if (typeof val === 'boolean') {
+    return val ? 1 : 0;
+  }
+
+  return val;
+}
 
 const styledash = {
   set: (key, val) => {
@@ -25,13 +27,13 @@ const styledash = {
       });
     }
 
-    return docStyle.setProperty(`--${key}`, val);
+    return docStyle.setProperty(`--${key}`, parse(val));
   },
   get: (key) => docStyle.getPropertyValue(`--${key}`),
 };
 
 function RxCSS(observableMap) {
-  const subject$ = new Rx.Subject();
+  const subject$ = new Subject();
   const state = {};
 
   const style$ = Observable.merge(...Object.keys(observableMap)

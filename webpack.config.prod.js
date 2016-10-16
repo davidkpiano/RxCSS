@@ -11,7 +11,7 @@ const config = Object.create(baseConfig);
 Object.assign(config, {
   entry: path.join(__dirname, 'src/index.js'),
   externals: {
-    'rxjs/Rx': {
+    'rxjs': {
       root: 'Rx',
       commonjs2: 'Rx',
       commonjs: 'Rx',
