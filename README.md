@@ -25,7 +25,10 @@ Or you can include it directly in a `<script>` tag:
 ```js
 const mouse$ = Rx.Observable
   .fromEvent(document, 'mousemove')
-  .map(({ x, y }) => ({ x, y }));
+  .map(({ clientX, clientY }) => ({
+    x: clientX,
+    y: clientY
+  }));
 
 
 const style$ = RxCSS({
