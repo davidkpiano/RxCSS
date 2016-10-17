@@ -45,7 +45,7 @@ style$.subscribe(...);
 
 .ball {
   transform:
-    translateX(var(--mouse-x))
-    translateY(var(--mouse-y));
+    translateX(calc(var(--mouse-x) * 1px))
+    translateY(calc(var(--mouse-y) * 1px));
 }
 ```
