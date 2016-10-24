@@ -16,8 +16,8 @@ npm install rxcss@latest --save
 
 Or you can include it directly in a `<script>` tag:
 ```html
-<script src="https://unpkg.com/@reactivex/rxjs/dist/global/Rx.js"></script>
-<script src="https://unpkg.com/rxcss@latest"></script>
+<script src="https://unpkg.com/@reactivex/rxjs/dist/global/Rx.min.js"></script>
+<script src="https://unpkg.com/rxcss@latest/dist/rxcss.min.js"></script>
 ```
 
 ## Usage
