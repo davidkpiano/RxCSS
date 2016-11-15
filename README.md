@@ -1,6 +1,11 @@
 # RxCSS
 
-**Note:** This is still an evolving idea! Stay tuned for special announcements at CSS Dev Conf about the future of RxCSS!
+RxCSS is a _very_ small library for manipulating [CSS Custom Properties](https://www.w3.org/TR/css-variables/) (aka CSS Variables) with [RxJS Observables](http://reactivex.io/rxjs/).
+
+**More Info**
+
+- :book: Read the slides: http://slides.com/davidkhourshid/reactanim#/
+- :movie_camera: Watch the presentation: https://www.youtube.com/watch?v=lTCukb6Zn3g
 
 ## Requirements
 
