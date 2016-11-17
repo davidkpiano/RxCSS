@@ -1,6 +1,6 @@
 {
   "name": "rxcss",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "RxJS and CSS",
   "main": "lib/index.js",
   "scripts": {
