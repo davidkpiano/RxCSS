@@ -57,3 +57,13 @@ style$.subscribe(...);
     translateY(calc(var(--mouse-y) * 1px));
 }
 ```
+
+## API
+
+### `RxCSS(observableMap[, target])`
+Sets each key/value pair, where each value is an observable, as a CSS variable on the target.
+
+- `observableMap` _(Object)_ - an object where each:
+  - `key` is the CSS variable name to be set on the `target`
+  - `value` is either an Observable stream of values, or a single value to set the CSS variable to.
+- `target` _(Element)_ - the DOM node to set the CSS variables to. Default: `document.documentElement`.
