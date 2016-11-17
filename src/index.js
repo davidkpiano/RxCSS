@@ -3,8 +3,6 @@ import { Observable, Subject } from 'rxjs';
 import unit from './unit';
 import rect from './rect';
 
-const docStyle = document.documentElement.style;
-
 const parse = (val) => {
   if (typeof val === 'boolean') {
     return val ? 1 : 0;
@@ -13,46 +11,44 @@ const parse = (val) => {
   return val;
 }
 
-const styledash = {
+const styledash = (target = document.documentElement) => ({
   set: (key, val) => {
     if (typeof key === 'object' && !val) {
       return Object.keys(key)
-        .map((subKey) => styledash.set(subKey, key[subKey]));
+        .map((subKey) => styledash(target).set(subKey, key[subKey]));
     }
 
     if (typeof val === 'object') {
       return Object.keys(val).forEach((subkey) => {
-        styledash.set(`${key}-${subkey}`, val[subkey]);
+        styledash(target).set(`${key}-${subkey}`, val[subkey]);
       });
     }
 
-    return docStyle.setProperty(`--${key}`, parse(val));
+    return target.style.setProperty(`--${key}`, parse(val));
   },
-  get: (key) => docStyle.getPropertyValue(`--${key}`),
-};
+  get: (key) => target.style.getPropertyValue(`--${key}`),
+});
 
-function RxCSS(observableMap) {
-  const subject$ = new Subject();
-  const state = {};
+function RxCSS(observableMap, target = document.documentElement) {
+  const style$ = Observable
+    .merge(...Object.keys(observableMap)
+      .map((key) => {
+        let observable = observableMap[key];
 
-  const style$ = Observable.merge(...Object.keys(observableMap)
-    .map((key) => {
-      let observable = observableMap[key];
+        if (!(observable instanceof Observable)) {
+          observable = Observable.of(observable);
+        }
 
-      if (!(observable instanceof Observable)) {
-        observable = Observable.of(observableMap[key]);
-      }
+        return observable.map((val) => ({ [key]: val }));
+      }))
+    .scan((state, style) => ({
+      ...state,
+      ...style,
+    }), {})
 
-      return observable.map((val) => ({ [key]: val }));
-    }));
+  style$.subscribe(style => styledash(target).set(style));
 
-  style$.subscribe((style) => {
-    const nextState = {...state, ...style};
-    styledash.set(style);
-    subject$.next(nextState);
-  });
-
-  return subject$;
+  return style$;
 }
 
 RxCSS.styledash = styledash;
