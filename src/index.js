@@ -4,11 +4,9 @@ import unit from './unit';
 import rect from './rect';
 
 const parse = (val) => {
-  if (typeof val === 'boolean') {
-    return val ? 1 : 0;
-  }
-
-  return val;
+  return (typeof val === 'boolean')
+    ? (!!val ? 1 : 0)
+    : val;
 }
 
 const styledash = (target = document.documentElement) => ({
