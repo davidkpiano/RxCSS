@@ -2,6 +2,8 @@ import { Observable, Subject } from 'rxjs';
 
 import unit from './unit';
 import rect from './rect';
+import lerp from './lerp';
+import animationFrame from './animationFrame';
 
 const parse = (val) => {
   return (typeof val === 'boolean')
@@ -52,5 +54,7 @@ function RxCSS(observableMap, target = document.documentElement) {
 RxCSS.styledash = styledash;
 RxCSS.unit = unit;
 RxCSS.rect = rect;
+RxCSS.lerp = lerp;
+RxCSS.animationFrame = animationFrame;
 
 module.exports = RxCSS;

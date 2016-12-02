@@ -1,17 +1,28 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
-const animationFrame$ = Observable.create((observer) => {
-  let active = true;
+const requestAnimationFrame = window.requestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.msRequestAnimationFrame;
 
-  const dispatch = () => {
-    observer.next(null);
+export function createAnimationFrameTicker() {
+  return Observable.create((observer) => {
+    let active = true;
+    let lastTick = Date.now();
+    let currentTick = Date.now();
 
-    if (active) requestAnimationFrame(dispatch);
-  }
+    const dispatch = () => {
+      const delta = Date.now() - lastTick;
 
-  dispatch();
+      observer.next(delta);
 
-  return () => active = false;
-});
+      if (active) requestAnimationFrame(dispatch);
+    }
 
-export default animationFrame$;
+    dispatch();
+
+    return () => active = false;
+  });
+}
+
+export default createAnimationFrameTicker();
