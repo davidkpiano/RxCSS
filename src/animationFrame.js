@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 const requestAnimationFrame = window.requestAnimationFrame
   || window.mozRequestAnimationFrame

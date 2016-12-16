@@ -1,4 +1,9 @@
-import { Observable, Subject } from 'rxjs';
+// window.Rx = require("rxjs/Rx")
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/map';
 
 import unit from './unit';
 import rect from './rect';
@@ -9,7 +14,10 @@ const parse = (val) => {
   return (typeof val === 'boolean')
     ? (!!val ? 1 : 0)
     : val;
-}
+};
+
+const isObservable = (o) =>
+  o && typeof o.subscribe === 'function';
 
 const styledash = (target = document.documentElement) => ({
   set: (key, val) => {
@@ -35,7 +43,7 @@ function RxCSS(observableMap, target = document.documentElement) {
       .map((key) => {
         let observable = observableMap[key];
 
-        if (!(observable instanceof Observable)) {
+        if (!isObservable(observable)) {
           observable = Observable.of(observable);
         }
 
