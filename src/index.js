@@ -1,9 +1,4 @@
-// window.Rx = require("rxjs/Rx")
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/map';
+import Observable from './observable';
 
 import unit from './unit';
 import rect from './rect';
