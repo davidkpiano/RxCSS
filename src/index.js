@@ -48,8 +48,7 @@ function RxCSS(observableMap, target = document.documentElement) {
       ...state,
       ...style,
     }), {})
-
-  style$.subscribe(style => styledash(target).set(style));
+    .do(style => styledash(target).set(style));
 
   return style$;
 }
