@@ -1,4 +1,5 @@
 import Observable from './observable';
+import Subject from './subject';
 
 import unit from './unit';
 import rect from './rect';
@@ -47,13 +48,23 @@ function RxCSS(observableMap, target = document.documentElement) {
     .scan((state, style) => ({
       ...state,
       ...style,
-    }), {})
-    .do(style => styledash(target).set(style));
+    }), {});
 
-  return style$;
+  const sub$ = new Subject();
+
+  // setTimeout is used here to ensure that
+  // the style$ observable is subscribed to
+  // only after it is returned
+  setTimeout(() => style$.subscribe(style => {
+    styledash(target).set(style)
+    sub$.next(style);
+  }));
+
+  return sub$;
 }
 
-RxCSS.styledash = styledash;
+RxCSS.set = (node, ...args) => styledash(node).set(...args);
+RxCSS.get = (node, ...args) => styledash(node).get(...args);
 RxCSS.unit = unit;
 RxCSS.rect = rect;
 RxCSS.lerp = lerp;

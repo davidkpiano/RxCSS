@@ -1,6 +1,6 @@
-import RxCSS, { styledash } from '../src/index';
+import RxCSS from '../src/index';
 import { assert } from 'chai';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 describe('standard usage', () => {
   it('should exist as a function', () => {
@@ -20,8 +20,8 @@ describe('standard usage', () => {
       assert.deepEqual(style, expected.shift());
 
       if (!expected.length) {
-        assert.equal(styledash(document.documentElement).get('foo'), 'foo');
-        assert.equal(styledash(document.documentElement).get('bar'), 'bar');
+        assert.equal(RxCSS.get(document.documentElement, 'foo'), 'foo');
+        assert.equal(RxCSS.get(document.documentElement, 'bar'), 'bar');
 
         done();
       }
