@@ -4,7 +4,7 @@ var path = require('path');
 'use strict';
 
 module.exports = {
-  entry: path.join(__dirname, 'src/index'),
+  entry: path.join(__dirname, 'src/index.ts'),
   output: {
     library: 'RxCSS',
     libraryTarget: 'umd',
@@ -12,10 +12,11 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.ts$/, loaders: ['ts-loader'], exclude: /node_modules/ },      
     ],
   },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.ts'],
   },
   plugins: [],
   // devtool: 'inline-source-map'

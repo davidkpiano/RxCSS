@@ -1,4 +1,4 @@
-import RxCSS from '../src/index';
+import RxCSS from '../dist/rxcss.min.js';
 import { assert } from 'chai';
 import { Observable, Subject } from 'rxjs';
 

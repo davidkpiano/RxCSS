@@ -7,8 +7,8 @@
     "start": "npm run build",
     "build": "npm run build:umd && npm run build:lib",
     "build:lib": "babel src --out-dir lib",
-    "build:umd": "webpack -p src/index.js dist/rxcss.min.js --config webpack.config.prod.js",
-    "build:watch": "webpack src/index.js dist/rxcss.min.js --config webpack.config.prod.js -w",
+    "build:umd": "webpack -p src/index.ts dist/rxcss.min.js --config webpack.config.prod.js",
+    "build:watch": "webpack src/index.ts dist/rxcss.min.js --config webpack.config.prod.js -w",
     "prepublish": "npm run build",
     "test": "mocha --require babel-core/register --require ./spec/helpers/setup-jsdom.js ./spec/"
   },
@@ -36,6 +36,8 @@
     "html-webpack-plugin": "^2.17.0",
     "jsdom": "~9.8.3",
     "mocha": "~3.1.2",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.2",
     "webpack": "^1.13.1"
   },
   "dependencies": {
